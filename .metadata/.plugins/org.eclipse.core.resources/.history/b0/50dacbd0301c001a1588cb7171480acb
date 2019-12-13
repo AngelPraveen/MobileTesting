@@ -1,0 +1,9 @@
+package configuration;
+
+import org.testng.annotations.Test;
+
+public class APICalls {
+  @Test
+  public void f() {
+  }
+}

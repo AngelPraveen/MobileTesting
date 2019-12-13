@@ -1,0 +1,10 @@
+qr.screen.button = activity_qrscan_qa_button
+qr.screen.facility = qa_screen_facility
+qr.screen.facility.id =  e491c843-4205-4592-95bc-68f099a33ee2
+qr.screen.token = qa_screen_token
+qr.screen.username = qa_screen_username
+qr.screen.password = qa_screen_password
+qr.screen.submit.button = qa_screen_submit_button
+cv.login.username = login_username
+cv.login.password = login_password
+cv.login.button = login_button

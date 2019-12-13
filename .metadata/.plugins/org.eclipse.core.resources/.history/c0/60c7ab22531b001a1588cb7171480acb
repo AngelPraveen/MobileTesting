@@ -1,0 +1,177 @@
+package configuration;
+
+import static org.testng.Assert.assertTrue;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestContext;
+import org.testng.Reporter;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+
+
+
+@Listeners(ScreenshotListener.class)
+public class AppConfig {
+	WebDriver driver;
+	AppiumDriver<WebElement> appiumDriver;
+	Properties prop = new Properties();
+	InputStream inputStream = getClass().getClassLoader().getResourceAsStream("resources.properties");
+
+
+	@BeforeTest
+	public void setUP(ITestContext context) throws MalformedURLException {
+
+		try {
+			prop.load(inputStream);
+		} catch (IOException ie) {
+			System.out.println(ie.getMessage());
+		}
+
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+
+		capabilities.setCapability("deviceName", "R52K10XNSAH");
+		capabilities.setCapability("automationName", "UiAutomator2");
+		capabilities.setCapability("platformName", "Android");
+		capabilities.setCapability("platformVersion", "9");
+		capabilities.setCapability("appActivity", "view.activity.SplashActivity");
+		capabilities.setCapability("appPackage", "com.oneviewhealthcare.carevisit");
+		capabilities.setCapability("autoGrantPermissions", "true");
+
+		capabilities.setCapability("noReset", "true");
+		capabilities.setCapability("fullRest", "false");
+
+
+
+		driver = new AndroidDriver<WebElement>(new URL("http://localhost:4723/wd/hub"), capabilities);
+		
+		context.setAttribute("webDriver", driver);
+
+	}
+
+
+	@Test (priority=1)
+	public void loginTest()throws Exception {
+
+		
+		WebDriverWait wait = new WebDriverWait(driver,90);
+
+
+		By login = By.id(prop.getProperty("cv.login.username"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(login));
+
+
+		WebElement el = driver.findElement(login);
+
+
+		Reporter.log("Launched Care Visit Android app");
+		el.sendKeys(prop.getProperty("cv.login.username.value"));
+		driver.findElement(By.id(prop.getProperty("cv.login.password"))).sendKeys(prop.getProperty("cv.login.password.value"));
+		driver.findElement(By.id(prop.getProperty("cv.login.button"))).click();
+		
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+		By resList = By.id(prop.getProperty("LDP.ID.ResList.List"));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(resList));
+		assertTrue(driver.findElement(resList).isDisplayed());
+		//wait.until(ExpectedConditions.attributeToBe(driver.findElement(By.id("title")), "text", "Oneview Facility-Other"));
+		//wait.until(ExpectedConditions.stalenessOf(driver.findElement(By.id("database_status_icon"))));
+
+		Reporter.log(" | User Logged in to Care **** Visit");
+
+	}
+
+	@Test (dependsOnMethods = "loginTest")
+	public void findResident() {
+		Boolean residentStatus = checkElementProps("Colleen Lynch", "resident_name"); 
+		System.out.println("*****"+driver.findElement(By.name("Colleen Lynch")));
+		System.out.println("Return status :: "+residentStatus);
+		assertTrue(residentStatus);
+	}
+
+	public boolean checkElementProps (String textToFind, String elementID) {
+		/*
+		 * Boolean status = false; List<WebElement> resList =
+		 * driver.findElements(By.id(elementID));
+		 * System.out.println("confirm if somethng returned from list: "+resList);
+		 * Iterator<WebElement> it = resList.iterator(); while (it.hasNext()) {
+		 * WebElement resident = it.next();
+		 * if((resident.toString()).contains(textToFind)) {
+		 * System.out.println("___________________"+resident.toString());
+		 * resident.click(); status = true; break; } else { swipe(); } }
+		 */
+		WebElement resList = driver.findElement(By.id(elementID));
+		System.out.println("found resident :: "+resList.toString());
+		if(resList.toString().contentEquals(textToFind)) {
+			resList.click();
+			return true;
+		}
+		return false;
+	}
+
+	public void swipe() {
+		
+		/*
+		 * TouchAction action = new TouchAction(appiumDriver); action.press(point(1700,
+		 * 1400)).moveTo(point(1700, 1600)).perform();
+		 */
+		
+		 Map<String, Object> params = new HashMap<>();
+         params.put("start","40%,90%");
+         params.put("end","40%,20%");
+         params.put("duration","2");
+         Object res= appiumDriver.executeScript("mobile:touch:swipe",params);
+		
+		
+	}
+	
+// additional sample method - not used yet
+public static void scrollDowntoXPath(String xPath, AppiumDriver driver) {
+    boolean flag=true;
+    int count=1;
+    while(flag){
+        try {
+            driver.findElement(By.xpath(xPath));
+            flag=false;
+            break;
+        }
+        catch(Exception NoSuchElementException) {
+            count=count+1;
+            Map<String, Object> params = new HashMap<>();
+            params.put("start","40%,90%");
+            params.put("end","40%,20%");
+            params.put("duration","2");
+            Object res= driver.executeScript("mobile:touch:swipe",params);
+        if(count==5)
+        {
+            break;
+        }
+        }
+    }
+}
+
+	
+	  @AfterClass
+	  public void tearDown() { 
+		  driver.quit();
+		  }
+	 
+}

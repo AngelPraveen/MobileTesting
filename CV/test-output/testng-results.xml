@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="2" passed="1" failed="1" skipped="0">
+  <reporter-output>
+    <line>
+      <![CDATA[Launched Care Visit Android app]]>
+    </line>
+    <line>
+      <![CDATA[ | User Logged in to Care Visit Android App]]>
+    </line>
+    <line>
+      <![CDATA[Resident Found]]>
+    </line>
+    <line>
+      <![CDATA[<td><a href='C:\Users\apraveenkumar\eclipse-workspace\CV\screen_shot\findResident_12_Dec_2019_16_28.jpg'><img src='C:\Users\apraveenkumar\eclipse-workspace\CV\screen_shot\findResident_12_Dec_2019_16_28.jpg' height='100' width='100'></a></td>]]>
+    </line>
+    <line>
+      <![CDATA[Performing Tear Down]]>
+    </line>
+  </reporter-output>
+  <suite started-at="2019-12-12T16:27:39 GMT" name="CV Suite" finished-at="2019-12-12T16:28:15 GMT" duration-ms="35422">
+    <groups>
+    </groups>
+    <test started-at="2019-12-12T16:27:39 GMT" name="BasicTest" finished-at="2019-12-12T16:28:15 GMT" duration-ms="35422">
+      <class name="configuration.LoginTest">
+        <test-method is-config="true" signature="setUP(org.testng.ITestContext)[pri:0, instance:configuration.LoginTest@68c72235]" started-at="2019-12-12T16:27:39 GMT" name="setUP" finished-at="2019-12-12T16:27:51 GMT" duration-ms="12255" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[org.testng.TestRunner@a1217f9]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUP -->
+        <test-method signature="loginTest(org.testng.ITestContext)[pri:1, instance:configuration.LoginTest@68c72235]" started-at="2019-12-12T16:27:51 GMT" name="loginTest" description="Login To Care Visits Android App" finished-at="2019-12-12T16:28:05 GMT" duration-ms="13210" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[org.testng.TestRunner@a1217f9]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+            <line>
+              <![CDATA[Launched Care Visit Android app]]>
+            </line>
+            <line>
+              <![CDATA[ | User Logged in to Care Visit Android App]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- loginTest -->
+        <test-method signature="findResident()[pri:0, instance:configuration.LoginTest@68c72235]" started-at="2019-12-12T16:28:05 GMT" name="findResident" description="Find a Resident from the Resident List" finished-at="2019-12-12T16:28:14 GMT" depends-on-methods="configuration.LoginTest.loginTest" duration-ms="9233" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[expected [Tom Jerry] but found [Syncing…]]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: expected [Tom Jerry] but found [Syncing…]
+at org.testng.Assert.fail(Assert.java:97)
+at org.testng.Assert.assertEqualsImpl(Assert.java:136)
+at org.testng.Assert.assertEquals(Assert.java:118)
+at org.testng.Assert.assertEquals(Assert.java:575)
+at org.testng.Assert.assertEquals(Assert.java:585)
+at configuration.LoginTest.findResident(LoginTest.java:75)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:133)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:584)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:172)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:804)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:145)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1380)
+at org.testng.TestRunner.privateRun(TestRunner.java:770)
+at org.testng.TestRunner.run(TestRunner.java:591)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:402)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:396)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:355)
+at org.testng.SuiteRunner.run(SuiteRunner.java:304)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1180)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1102)
+at org.testng.TestNG.runSuites(TestNG.java:1032)
+at org.testng.TestNG.run(TestNG.java:1000)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+            <line>
+              <![CDATA[Resident Found]]>
+            </line>
+            <line>
+              <![CDATA[<td><a href='C:\Users\apraveenkumar\eclipse-workspace\CV\screen_shot\findResident_12_Dec_2019_16_28.jpg'><img src='C:\Users\apraveenkumar\eclipse-workspace\CV\screen_shot\findResident_12_Dec_2019_16_28.jpg' height='100' width='100'></a></td>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- findResident -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:configuration.LoginTest@68c72235]" started-at="2019-12-12T16:28:15 GMT" name="tearDown" finished-at="2019-12-12T16:28:15 GMT" duration-ms="543" status="PASS">
+          <reporter-output>
+            <line>
+              <![CDATA[Performing Tear Down]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- configuration.LoginTest -->
+    </test> <!-- BasicTest -->
+  </suite> <!-- CV Suite -->
+</testng-results>

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: apraveenkumar
+Build-Jdk: 9.0.4
+Implementation-Title: spring-security-login-and-registration
+Implementation-Version: 1.0.1-SNAPSHOT
+Implementation-Vendor-Id: org.baeldung
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/spring-security-login-and-registration
+Created-By: Maven Integration for Eclipse
+

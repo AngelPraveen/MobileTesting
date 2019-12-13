@@ -1,0 +1,62 @@
+package configuration;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.testng.ITestResult;
+import org.testng.Reporter;
+import org.testng.TestListenerAdapter;
+
+
+
+public class ScreenshotListener extends TestListenerAdapter {
+	
+	
+	
+    @Override
+    public void onTestFailure(ITestResult result) {
+    	
+        //Taking screeenshot on failure !
+        if(!result.isSuccess()){
+        	
+        	WebDriver driver = (WebDriver)result.getTestContext().getAttribute("webDriver");
+			
+            try {
+            	TakesScreenshot screenshot=(TakesScreenshot)driver;
+
+				File src=screenshot.getScreenshotAs(OutputType.FILE);
+
+
+				Calendar cal = Calendar.getInstance();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MMM_yyyy_HH_mm");
+				String dateStr = dateFormat.format(cal.getTime());
+				String filename = result.getName()+"_"+dateStr+".png";
+				System.out.println("filename :: "+filename);
+				String screen_shot_path = System.getProperty("user.dir") + "\\screen_shot\\"+filename;
+				System.out.println("user.dir :: "+System.getProperty("user.dir"));
+				FileUtils.copyFile(src, new File(screen_shot_path));
+				
+				  Reporter.log("<td><a href='" + filename + "'><img src='" + screen_shot_path +
+				  "' height='100' width='100' /></a></td>");
+				 
+				System.out.println("<td><a href='" + filename
+						+ "'><img src='" + screen_shot_path
+						+ "' height='100' width='100' /></a></td>");
+				System.out.println("Successfully captured a screenshot at file named :: "+screen_shot_path);
+				
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+           
+        }
+    }
+	
+	
+
+}

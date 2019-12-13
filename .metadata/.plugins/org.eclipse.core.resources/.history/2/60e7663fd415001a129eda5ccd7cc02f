@@ -1,0 +1,47 @@
+package configuration;
+
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
+public class TestNgReporting implements ITestListener{
+
+	public void onTestStart(ITestResult result) {
+		// TODO Auto-generated method stub
+		ITestListener.super.onTestStart(result);
+	}
+
+	public void onTestSuccess(ITestResult result) {
+		// TODO Auto-generated method stub
+		ITestListener.super.onTestSuccess(result);
+	}
+
+	public void onTestFailure(ITestResult result) {
+		// TODO Auto-generated method stub
+		ITestListener.super.onTestFailure(result);
+	}
+
+	public void onTestSkipped(ITestResult result) {
+		
+		System.out.println("Test Skipped :: "+result.getName());
+	}
+
+	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
+		System.out.println("Test Failed but with Success Percentage :: "+result.getName());
+	}
+
+	public void onTestFailedWithTimeout(ITestResult result) {
+		System.out.println("Test Failed with Timeout :: "+result.getName());
+	}
+
+	public void onStart(ITestContext context) {
+		System.out.println("Test Started :: "+context.getName());
+	}
+
+	public void onFinish(ITestContext context) {
+		System.out.println("Test Finished :: "+context.getName());
+	}
+	
+	
+
+}

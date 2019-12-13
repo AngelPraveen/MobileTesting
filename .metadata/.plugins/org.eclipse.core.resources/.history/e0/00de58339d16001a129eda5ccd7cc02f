@@ -1,0 +1,162 @@
+package configuration;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
+import org.testng.Reporter;
+import org.testng.TestListenerAdapter;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+import io.appium.java_client.android.AndroidDriver;
+
+
+
+
+public class AppConfig {
+
+	WebDriver driver;
+	Properties prop = new Properties();
+	InputStream inputStream = getClass().getClassLoader().getResourceAsStream("resources.properties");
+	
+
+	@BeforeClass
+	public void setUP() throws MalformedURLException {
+
+		try {
+			prop.load(inputStream);
+		} catch (IOException ie) {
+			System.out.println(ie.getMessage());
+		}
+
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+
+		capabilities.setCapability("deviceName", "R52K10XNSAH");
+		capabilities.setCapability("automationName", "UiAutomator2");
+		capabilities.setCapability("platformName", "Android");
+		capabilities.setCapability("platformVersion", "9");
+		capabilities.setCapability("appActivity", "view.activity.SplashActivity");
+		capabilities.setCapability("appPackage", "com.oneviewhealthcare.carevisit");
+		capabilities.setCapability("autoGrantPermissions", "true");
+
+		capabilities.setCapability("noReset", "true");
+		capabilities.setCapability("fullRest", "false");
+
+
+
+		driver = new AndroidDriver<WebElement>(new URL("http://localhost:4723/wd/hub"), capabilities);
+
+	}
+
+	
+	@Test 
+	public void loginTest()throws Exception {
+		
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		WebDriverWait wait = new WebDriverWait(driver,90);
+
+
+		By login = By.id(prop.getProperty("cv.login.username"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(login));
+
+
+		WebElement el = driver.findElement(login);
+
+
+		Reporter.log("Launched Care Visit Android app");
+		el.sendKeys(prop.getProperty("cv.login.username.value"));
+		driver.findElement(By.id(prop.getProperty("cv.login.password"))).sendKeys(prop.getProperty("cv.login.password.value"));
+		driver.findElement(By.id(prop.getProperty("cv.login.button"))).click();
+
+		//WebElement resList = driver.findElement(By.id(prop.getProperty("LDP.ID.ResList.List")));
+		//wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(prop.getProperty("LDP.ID.ResList.List"))));
+		wait.until(ExpectedConditions.attributeToBe(driver.findElement(By.id("title")), "text", "Oneview Facility-Other"));
+		
+		Reporter.log(" | User Logged in to Care **** Visit");
+			
+	}
+	
+	 @Test
+	  public void findResident() {
+		  checkElementProps("Colleen Lynch", "resident_name");  
+	  }
+	  
+	  public boolean checkElementProps (String textToFind, String elementID) {
+		  Boolean status = false;
+		  List<WebElement> resList = driver.findElements(By.id(elementID));
+		  Iterator<WebElement> it = resList.iterator();
+		  while (it.hasNext()) {
+			  WebElement resident = it.next();
+			  if((resident.toString()).contains(textToFind)) {
+				  System.out.println("___________________"+resident.toString());
+				  			resident.clear();
+				  			status = true;
+				  			break;
+				  			}
+			  
+		  				}
+		  return status;
+	  }
+
+
+	@AfterClass
+	
+	public void screenShot(ITestResult result) {
+		
+		if(! result.isSuccess()) {
+				System.out.println("Capturing Screenshot on Failure");
+				try{
+
+					TakesScreenshot screenshot=(TakesScreenshot)driver;
+
+					File src=screenshot.getScreenshotAs(OutputType.FILE);
+					
+					
+					Calendar cal = Calendar.getInstance();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH_mm");
+					String dateStr = dateFormat.format(cal.getTime());
+					String filename = result.getName()+"_"+dateStr+".png";
+					String screen_shot_path = System.getProperty("user.dir") + "\\screen_shot\\"+filename;
+					System.out.println(screen_shot_path+"~~~~~~~~~~~~~~_");
+					FileUtils.copyFile(src, new File(screen_shot_path));
+					Reporter.log("<td><a href='" + screen_shot_path
+		                    + ".jpg'><img src='" + screen_shot_path
+		                    + ".jpg' height='100' width='100' /></a></td>");
+					System.out.println("Successfully captured a screenshot at file named :: "+screen_shot_path);
+					
+					}catch (Exception e){
+						
+						System.out.println("Exception while taking screenshot "+e.getMessage());
+				} 
+		}
+	}
+
+
+
+	@AfterClass
+	public void tearDown() {
+		driver.quit();
+	}
+}

@@ -1,0 +1,4 @@
+#Tomcat publish data
+#Wed Nov 20 15:03:19 GMT 2019
+org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\apraveenkumar\\.m2\\repository\\org\\apache\\tomcat\\embed\\tomcat-embed-websocket\\8.5.32\\tomcat-embed-websocket-8.5.32.jar=WEB-INF/lib/tomcat-embed-websocket-8.5.32.jar
+org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\apraveenkumar\\.m2\\repository\\org\\springframework\\spring-web\\5.0.8.RELEASE\\spring-web-5.0.8.RELEASE.jar=WEB-INF/lib/spring-web-5.0.8.RELEASE.jar

@@ -1,0 +1,66 @@
+package configuration;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
+import org.testng.annotations.Test;
+
+
+public class LoginTest {
+	AppConfig appConfig;
+	
+	@Test (description = "Login To Care Visits Android App", priority=1)
+	public void loginTest()throws Exception {
+
+
+		WebDriverWait wait = new WebDriverWait(appConfig.driver,90);
+
+
+		By login = By.id(appConfig.prop.getProperty("cv.login.username"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(login));
+
+
+		WebElement el = appConfig.driver.findElement(login);
+
+
+		Reporter.log("Launched Care Visit Android app");
+		el.sendKeys(appConfig.prop.getProperty("cv.login.username.value"));
+		appConfig.driver.findElement(By.id(appConfig.prop.getProperty("cv.login.password"))).sendKeys(appConfig.prop.getProperty("cv.login.password.value"));
+		appConfig.driver.findElement(By.id(appConfig.prop.getProperty("cv.login.button"))).click();
+
+		appConfig.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+		By resList = By.id(appConfig.prop.getProperty("LDP.ID.ResList.List"));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(resList));
+		assertTrue(appConfig.driver.findElement(resList).isDisplayed());
+		//wait.until(ExpectedConditions.attributeToBe(driver.findElement(By.id("title")), "text", "Oneview Facility-Other"));
+		//wait.until(ExpectedConditions.stalenessOf(driver.findElement(By.id("database_status_icon"))));
+
+		Reporter.log(" | User Logged in to Care Visit Android App");
+
+	}
+
+	@Test (description = "Find a Resident from the Resident List", dependsOnMethods = "loginTest")
+	public void findResident() {
+		String residentName = "Tom Jerry";
+		WebDriverWait wait = new WebDriverWait(appConfig.driver,30);
+		Boolean residentFound = appConfig.searchItemByElementID(residentName, "resident_name");
+		
+		if(residentFound) {
+			Reporter.log("Resident Found");
+		wait.until(ExpectedConditions.visibilityOf(appConfig.driver.findElement(By.id("title"))));
+		assertEquals(appConfig.driver.findElement(By.id("title")).getAttribute("text"), residentName);
+		}else {
+			Reporter.log("Resident Not Found In List !!!");
+			assertTrue(residentFound, "Resident Not Found In List !!!");
+		}
+	}
+
+}
