@@ -71,7 +71,7 @@ public class LoginTest extends AppConfig {
 		if(residentFound) {
 			Reporter.log("Resident Found");
 			System.out.println("Found Resident !!");
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("title"))));
+		wait.until(ExpectedConditions.attributeToBe(driver.findElement(By.id("title")), "text", residentName))
 		assertEquals(driver.findElement(By.id("title")).getAttribute("text"), residentName);
 		}else {
 			Reporter.log("Resident Not Found In List !!!");
